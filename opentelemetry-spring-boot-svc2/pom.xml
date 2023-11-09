@@ -48,11 +48,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-exporter-otlp</artifactId>
-            <version>${otel-exporter-otlp.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -65,9 +60,20 @@
             <artifactId>jboss-annotations-api_1.3_spec</artifactId>
             <version>2.0.1.Final</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-otlp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-zipkin</artifactId>
         </dependency>
 
         <dependency>
@@ -102,7 +108,6 @@
     <properties>
         <spring-boot-dependencies.version>3.1.5</spring-boot-dependencies.version>
         <release.train.version>2021.0.5</release.train.version>
-        <otel-exporter-otlp.version>1.30.1</otel-exporter-otlp.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <micrometer-tracing.version>1.1.6</micrometer-tracing.version>

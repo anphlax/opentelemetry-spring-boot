@@ -1,28 +1,40 @@
-version: "4.0"
+version: "4"
 
 services:
-#  product-service:
-#    build: opentelemetry-spring-boot-svc1/
-#    ports:
-#      - "8080:8080"
-#
-#  price-service:
-#    build: opentelemetry-spring-boot-svc2/
-#    ports:
-#      - "8081"
-
-  jaeger:
-    image: jaegertracing/all-in-one:latest
+  zipkin:
+    container_name: zipkin
+    image: openzipkin/zipkin
+    extra_hosts: ['host.docker.internal:host-gateway']
+    restart: always
     ports:
-      - "16686:16686"
-      - "14250"
+      - 9411:9411
 
-  collector:
-    image: otel/opentelemetry-collector:0.72.0
-    command: [ "--config=/etc/otel-collector-config.yml" ]
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    extra_hosts: ['host.docker.internal:host-gateway']
+    restart: always
+    command:
+      - --enable-feature=exemplar-storage
+      - --config.file=/etc/prometheus/prometheus.yml
     volumes:
-      - ./otel-config.yml:/etc/otel-collector-config.yml
+      - ./docker/config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     ports:
-      - "4317:4317"
-    depends_on:
-      - jaeger
+      - 9090:9090
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    extra_hosts: ['host.docker.internal:host-gateway']
+    restart: always
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    volumes:
+      - ./docker/config/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./docker/config/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+    ports:
+      - 3000:3000
+# Zipkin: http://localhost:9411/zipkin/
+# Prometheus: http://localhost:9090/
+# Grafana: http://localhost:3000/
