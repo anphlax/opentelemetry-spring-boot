@@ -1,19 +1,17 @@
 version: "4.0"
 
 services:
-  product-service:
-    platform: linux/x86_64
-    build: spring-cloud-open-telemetry1/
-    ports:
-      - "8080:8080"
+#  product-service:
+#    build: opentelemetry-spring-boot-svc1/
+#    ports:
+#      - "8080:8080"
+#
+#  price-service:
+#    build: opentelemetry-spring-boot-svc2/
+#    ports:
+#      - "8081"
 
-  price-service:
-    platform: linux/x86_64
-    build: spring-cloud-open-telemetry2/
-    ports:
-      - "8081"
-
-  jaeger-service:
+  jaeger:
     image: jaegertracing/all-in-one:latest
     ports:
       - "16686:16686"
@@ -27,4 +25,4 @@ services:
     ports:
       - "4317:4317"
     depends_on:
-      - jaeger-service
+      - jaeger
